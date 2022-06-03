@@ -1,6 +1,7 @@
 package com.example.vulnscan20
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,39 +21,42 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vulnscan20.ui.theme.Teal200
+import com.example.vulnscan20.ui.theme.VulnScan20Theme
 
 @Composable
 fun Welcome(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Card {
-            var expanded by remember { mutableStateOf(false) }
-            Column(
-                modifier = Modifier.clickable { expanded = !expanded },
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.welcomeimg),
-                    contentDescription = "Profile picture",
-                    Modifier.padding(all = 5.dp)
-                )
-                AnimatedVisibility(expanded) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(text = "Welcome to \n VulnScan", textAlign = TextAlign.Center)
-                        TextButton(
-                            onClick = { navController.navigate("homescreen") },
-                            colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200)
-                        )
-                        {
-                            Text("Continue", color = Color.Black)
+    VulnScan20Theme() {
+        Column(
+            modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card (backgroundColor = Color.White) {
+                var expanded by remember { mutableStateOf(false) }
+                Column(
+                    modifier = Modifier.clickable { expanded = !expanded },
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.welcomeimg),
+                        contentDescription = "Profile picture",
+                        Modifier.padding(all = 5.dp)
+                    )
+                    AnimatedVisibility(expanded) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(text = "Welcome to \n VulnScan", textAlign = TextAlign.Center, color = Color.Black)
+                            TextButton(
+                                onClick = { navController.navigate("homescreen") },
+                                colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200)
+                            )
+                            {
+                                Text("Continue", color = Color.Black)
+                            }
                         }
-                    }
 
+                    }
                 }
             }
         }

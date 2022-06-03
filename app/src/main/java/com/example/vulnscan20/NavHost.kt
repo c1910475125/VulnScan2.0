@@ -2,6 +2,7 @@ package com.example.vulnscan20
 
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.view.Surface
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme

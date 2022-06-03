@@ -2,8 +2,8 @@ package com.example.vulnscan20
 
 import android.content.Context
 import android.content.pm.PackageInfo
+import android.content.pm.ServiceInfo
 import android.content.res.Configuration
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,15 +13,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.vulnscan20.ui.theme.Teal200
@@ -42,7 +49,6 @@ class MainActivity : ComponentActivity() {
                     NavHost (context) {
                         startActivity(ProfileActivity.newIntent(this, it))
                     }
-
                 }
             }
         }
@@ -51,55 +57,37 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "Welcome to VulnScan!")
-        Spacer(modifier = Modifier.height(100.0.dp))
-        TextButton(
-            onClick = { navController.navigate("applist") },
-            colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200),
-        )
-        {
-            Text(
-                "Scan one of your \n installed Applications",
-                color = Color.Black,
-                textAlign = TextAlign.Center
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(text = "Welcome to VulnScan!")
+            Spacer(modifier = Modifier.height(50.0.dp))
+            TextButton(
+                onClick = { navController.navigate("applist") },
+                colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200),
             )
+            {
+                Text(
+                    "Scan one of your \n installed Applications",
+                    color = Color.Black,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Spacer(modifier = Modifier.height(50.0.dp))
+            TextButton(
+                onClick = { System.exit(-1) },
+                colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200)
+            )
+            {
+                Text(
+                    "Exit the Application",
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                )
+            }
         }
-    }
-}
-
-data class Application(val appName: String,
-                       val packageName: String
-) : Serializable
-
-@Composable
-fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application) -> Unit) {
-    val pm = context.packageManager
-    val testapp = Application(app.applicationInfo.loadLabel(pm).toString(), app.packageName)
-    Row (modifier = Modifier
-        .padding(all = 8.dp)
-        .clickable {
-                navigateToProfile(testapp)
-        }
-        ){
-        AsyncImage(
-            model = app.applicationInfo.loadIcon(pm),
-            contentDescription = "",
-        modifier = Modifier
-            .size(40.dp)
-            .clip(CircleShape)
-        )
-        Column {
-            Text(
-                text = app.applicationInfo.loadLabel(pm).toString(),
-                color = MaterialTheme.colors.secondaryVariant,
-                style = MaterialTheme.typography.subtitle2)
-        }
-    }
 }
 
 @Composable
@@ -112,9 +100,34 @@ fun AppList(apps: MutableList<PackageInfo>, context: Context, navigateToProfile:
 }
 
 @Composable
-fun ScanScreen(packageInfo: Application, onNavIconPressed: () -> Unit = {}){
-    Text(text = "Success")
-    Text(text = packageInfo.packageName)
+fun ScanScreen(app: Application, onNavIconPressed: () -> Unit = {}){
+    VulnScan20Theme {
+        Column (modifier = Modifier.fillMaxSize()) {
+            Text(text = "Application Name: " + app.appName)
+            Text(text = "Package Name: " + app.packageName)
+            app.version?.let { Text(text = "Version: $it") }
+            Text(text = "Source Directory: " + app.sourcedir)
+            Text(text = "Data Directory: " + app.datadir)
+            Spacer(modifier = Modifier.height(20.0.dp))
+            Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+                TextButton(
+                    onClick = { Scan() },
+                    colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200),
+                )
+                {
+                    Text(
+                        "Scan the Selected \n Application",
+                        color = Color.Black,
+                        textAlign = TextAlign.Center,
+                    )
+                }
+            }
+        }
+    }
+}
+
+fun Scan() {
+
 }
 
 
