@@ -2,8 +2,6 @@ package com.example.vulnscan20
 
 import android.content.Context
 import android.content.pm.PackageInfo
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -12,7 +10,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
@@ -24,7 +21,8 @@ fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application)
         app.packageName,
         app.versionName,
         app.applicationInfo.sourceDir,
-        app.applicationInfo.dataDir
+        app.applicationInfo.dataDir,
+        app.requestedPermissions.toString() + app.services + app.providers + app.requestedPermissionsFlags + app.applicationInfo.permission
     )
     Row (modifier = Modifier
         .padding(all = 8.dp)

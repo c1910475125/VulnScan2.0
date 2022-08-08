@@ -25,7 +25,7 @@ import com.example.vulnscan20.ui.theme.VulnScan20Theme
 
 @Composable
 fun Welcome(navController: NavController) {
-    VulnScan20Theme() {
+    VulnScan20Theme {
         Column(
             modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally

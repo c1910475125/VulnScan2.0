@@ -29,6 +29,7 @@ fun NavHost(context: Context, navigateToProfile: (Application) -> Unit) {
             composable("welcome") { Welcome(navController = navController) }
             composable("homescreen") { HomeScreen(navController = navController) }
             composable("applist") { AppList(list, context, navigateToProfile) }
+            composable("androidscan") { AndroidScan(context) }
         }
     }
 }
