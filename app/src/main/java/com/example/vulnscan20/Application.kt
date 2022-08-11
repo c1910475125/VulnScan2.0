@@ -1,14 +1,12 @@
 package com.example.vulnscan20
 
-import android.content.pm.PermissionInfo
+import android.graphics.drawable.Drawable
 import java.io.Serializable
-import java.security.Permissions
 
 data class Application(
     val appName: String,
     val packageName: String,
     val version: String?,
     val sourcedir: String,
-    val datadir: String,
-    val permissions: String?
+    val datadir: String
 ) : Serializable

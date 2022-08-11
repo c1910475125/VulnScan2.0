@@ -2,7 +2,6 @@ package com.example.vulnscan20
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -27,7 +26,7 @@ class ProfileActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ScanScreen(application)
+                    AppScreen(application)
                 }
             }
         }
