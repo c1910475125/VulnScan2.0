@@ -1,11 +1,13 @@
 package com.example.vulnscan20
 
+import android.app.KeyguardManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+
+import androidx.core.content.getSystemService
 import androidx.fragment.app.FragmentActivity
 import com.example.vulnscan20.ui.theme.VulnScan20Theme
 import java.io.File
@@ -32,6 +37,7 @@ class MainActivity : FragmentActivity() {
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val mgr = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         val context = applicationContext
         super.onCreate(savedInstanceState)
         setContent {
@@ -55,7 +61,7 @@ class MainActivity : FragmentActivity() {
                     override fun onAuthenticationError(
                         errorCode: Int,
                         errString: CharSequence
-                    ) {
+                    ) { if (mgr.isDeviceSecure) {
                         super.onAuthenticationError(errorCode, errString)
                         Toast.makeText(
                             applicationContext,
@@ -65,6 +71,7 @@ class MainActivity : FragmentActivity() {
                             .show()
                         moveTaskToBack(true)
                         exitProcess(-1)
+                    }
                     }
 
                     override fun onAuthenticationFailed() {
@@ -86,9 +93,11 @@ class MainActivity : FragmentActivity() {
     }
 }
 
+
 @Composable
 fun OSinfo(context: Context) {
     val version = Build.VERSION.RELEASE
+    val mgr = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
     val devmode = Settings.Secure.getInt(
         context.contentResolver,
         Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
@@ -140,7 +149,21 @@ fun OSinfo(context: Context) {
                 text = "Your Android device seems to not be rooted or emulated.",
                 color = Color.Green
             )
-
+        }
+        @RequiresApi(Build.VERSION_CODES.M)
+        if (mgr.isDeviceSecure) {
+            Text(text = "Lock:")
+            Text(
+                text = "Your Android device uses an appropriate lockscreen.",
+                color = Color.Green
+            )
+        }
+        else if (!mgr.isDeviceSecure) {
+            Text(text = "Lock:")
+            Text(
+                text = "Your Android device is not appropriately locked. Consider setting up a pin code.",
+                color = Color.Red
+            )
         }
     }
 
@@ -172,3 +195,4 @@ fun isEmulator(context: Context): Boolean {
             || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
             || "google_sdk".equals(Build.PRODUCT)
 }
+
