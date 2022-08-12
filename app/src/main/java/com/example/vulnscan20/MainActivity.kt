@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ class MainActivity : FragmentActivity() {
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         val mgr = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         val context = applicationContext

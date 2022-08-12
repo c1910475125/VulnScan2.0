@@ -51,7 +51,7 @@ fun Welcome(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Welcome to \n VulnScan",
+                                text = "Welcome to \n AndroScan",
                                 textAlign = TextAlign.Center,
                                 color = Color.Black
                             )

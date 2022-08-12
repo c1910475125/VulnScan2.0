@@ -45,7 +45,7 @@ fun HomeScreen(navController: NavController, activity: MainActivity, context: Co
         )
         {
             Text(
-                "Overlook your \n installed Applications",
+                "Overlook your \n System Applications",
                 color = Color.Black,
                 textAlign = TextAlign.Center
             )
@@ -57,7 +57,7 @@ fun HomeScreen(navController: NavController, activity: MainActivity, context: Co
         )
         {
             Text(
-                "Check your System",
+                "Check Security Settings",
                 color = Color.Black,
                 textAlign = TextAlign.Center
             )

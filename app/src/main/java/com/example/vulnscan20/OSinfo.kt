@@ -70,7 +70,7 @@ fun OSinfo(context: Context) {
             )
         } else {
             Text(
-                text = "Your Android device seems to not be rooted or emulated.\n",
+                text = "Your Android Device seems to not be rooted or emulated.\n",
                 color = Color.Green
             )
         }
@@ -90,12 +90,12 @@ fun OSinfo(context: Context) {
         Text(text = "Lock:")
         if (mgr.isDeviceSecure) {
             Text(
-                text = "Your Android device uses an appropriate lockscreen.\n",
+                text = "Your Android Device uses an appropriate lockscreen.\n",
                 color = Color.Green
             )
         } else if (!mgr.isDeviceSecure) {
             Text(
-                text = "Your Android device is not appropriately locked. Consider setting up a pin code.\n",
+                text = "Your Android Device is not appropriately locked. Consider setting up a pin code.\n",
                 color = Color.Red
             )
         }
@@ -104,7 +104,7 @@ fun OSinfo(context: Context) {
             Text(text = "Bluetooth:")
             if (bluetoothAdapter.isEnabled) {
                 Text(
-                    text = "Your device has bluetooth enabled. Consider disabling it if is not currently required.\n",
+                    text = "Your Android Device has bluetooth enabled. Consider disabling it if is not currently required.\n",
                     color = Color.Red
                 )
             } else if (!bluetoothAdapter.isEnabled) {
@@ -113,7 +113,7 @@ fun OSinfo(context: Context) {
                     color = Color.Green
                 )
             }
-            if (ActivityCompat.checkSelfPermission(
+             if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
@@ -123,7 +123,7 @@ fun OSinfo(context: Context) {
 
                 Text(text = "Enable bluetooth permissions for this application to overview paired devices and their MAC addresses. \n")
 
-            } else {
+            } else if (bluetoothAdapter.isEnabled) {
                 Row {
                     Text(
                         text = "Paired Device Name:",
@@ -160,7 +160,8 @@ fun OSinfo(context: Context) {
         Text(text = "Tapjacking:")
         if (version < 4 || version == 6) {
             Text(
-                text = "Your Android Version could be vulnerable to tapjacking. Consider updating your OS.\n",
+                text = "Your Android Version could be vulnerable to tapjacking. Consider updating your OS.\n" +
+                        "Vulnerable Versions include Android 4.0.3 and lower as well as Android 6.0.1",
                 color = Color.Red
             )
         } else {

@@ -32,7 +32,7 @@ fun AppList(
 }
 
 @Composable
-fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (com.example.vulnscan20.Application) -> Unit) {
+fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application) -> Unit) {
     val pm = context.packageManager
     
     val testapp = Application(
