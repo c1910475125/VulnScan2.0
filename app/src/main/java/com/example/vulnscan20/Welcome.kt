@@ -1,7 +1,9 @@
 package com.example.vulnscan20
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,18 +21,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import com.example.vulnscan20.ui.theme.Teal200
 import com.example.vulnscan20.ui.theme.VulnScan20Theme
 
 @Composable
 fun Welcome(navController: NavController) {
+
     VulnScan20Theme {
         Column(
             modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card (backgroundColor = Color.White) {
+            Card(backgroundColor = Color.White) {
                 var expanded by remember { mutableStateOf(false) }
                 Column(
                     modifier = Modifier.clickable { expanded = !expanded },
@@ -46,7 +50,11 @@ fun Welcome(navController: NavController) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "Welcome to \n VulnScan", textAlign = TextAlign.Center, color = Color.Black)
+                            Text(
+                                text = "Welcome to \n VulnScan",
+                                textAlign = TextAlign.Center,
+                                color = Color.Black
+                            )
                             TextButton(
                                 onClick = { navController.navigate("homescreen") },
                                 colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200)

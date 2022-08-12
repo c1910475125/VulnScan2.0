@@ -1,5 +1,9 @@
 package com.example.vulnscan20
 
+import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -10,17 +14,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import com.example.vulnscan20.ui.theme.Teal200
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, activity: MainActivity, context: Context) {
+
+    if (ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.BLUETOOTH_CONNECT
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(Manifest.permission.BLUETOOTH_CONNECT),2
+        )
+    }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = "Welcome to VulnScan!")
+        Text(text = "Welcome to AndroScan!")
         Spacer(modifier = Modifier.height(30.0.dp))
         TextButton(
             modifier = Modifier.padding(0.dp, 10.dp),
@@ -36,7 +52,7 @@ fun HomeScreen(navController: NavController) {
         }
 
         TextButton(
-            onClick = { navController.navigate("osinfo") },
+            onClick = {  navController.navigate("osinfo") },
             colors = ButtonDefaults.textButtonColors(backgroundColor = Teal200),
         )
         {
