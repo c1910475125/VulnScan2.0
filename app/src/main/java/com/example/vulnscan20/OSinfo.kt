@@ -1,7 +1,6 @@
 package com.example.vulnscan20
 
 import android.Manifest
-import android.app.Activity
 import android.app.KeyguardManager
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -21,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.FragmentActivity
 import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -58,12 +56,12 @@ fun OSinfo(context: Context) {
         }
 
         Text(text = "Rooting & Emulation:")
-        if (isRooted(context)) {
+        if (isRooted()) {
             Text(
                 text = "Your Android Device seems to be rooted. Rooted devices are more vulnerable to malware attacks.\n",
                 color = Color.Red
             )
-        } else if (isEmulator(context)) {
+        } else if (isEmulator()) {
             Text(
                 text = "Your Android Device seems to be emulated.\n",
                 color = Color.Red
@@ -104,7 +102,7 @@ fun OSinfo(context: Context) {
             Text(text = "Bluetooth:")
             if (bluetoothAdapter.isEnabled) {
                 Text(
-                    text = "Your Android Device has bluetooth enabled. Consider disabling it if is not currently required.\n",
+                    text = "Your Android Device has bluetooth enabled. Consider disabling it if it is not currently required.\n",
                     color = Color.Red
                 )
             } else if (!bluetoothAdapter.isEnabled) {
@@ -113,12 +111,11 @@ fun OSinfo(context: Context) {
                     color = Color.Green
                 )
             }
-             if (ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.BLUETOOTH_CONNECT
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-
 
 
                 Text(text = "Enable bluetooth permissions for this application to overview paired devices and their MAC addresses. \n")
@@ -151,8 +148,7 @@ fun OSinfo(context: Context) {
         if (bluetoothAdapter == null) {
             Text(text = "Bluetooth:")
             Text(
-                text = "Your device does not support bluetooth\n",
-                color = Color.Red
+                text = "Your device does not support bluetooth\n"
             )
         }
 
@@ -174,11 +170,6 @@ fun OSinfo(context: Context) {
 
 }
 
-//    check microphone and camera activity
-//    check gps activity
-//    check sleep timer check
-//    check backup status
-
 fun checkTimeout(context: Context): Boolean {
     if (Settings.System.getInt(
             context.contentResolver,
@@ -190,8 +181,8 @@ fun checkTimeout(context: Context): Boolean {
     return false
 }
 
-fun isRooted(context: Context): Boolean {
-    val isEmulator = isEmulator(context)
+fun isRooted(): Boolean {
+    val isEmulator = isEmulator()
     val buildTags = Build.TAGS
     return if (!isEmulator && buildTags != null && buildTags.contains("test-keys")) {
         true
@@ -206,7 +197,7 @@ fun isRooted(context: Context): Boolean {
     }
 }
 
-fun isEmulator(context: Context): Boolean {
+fun isEmulator(): Boolean {
     return Build.FINGERPRINT.startsWith("generic")
             || Build.FINGERPRINT.startsWith("unknown")
             || Build.MODEL.contains("google_sdk")

@@ -1,19 +1,20 @@
 package com.example.vulnscan20
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
+import android.icu.text.SymbolTable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.vulnscan20.ui.theme.VulnScan20Theme
@@ -24,17 +25,47 @@ fun AppList(
     context: Context,
     navigateToProfile: (Application) -> Unit
 ) {
-    LazyColumn {
-        items(apps) { app ->
-            AppCard(app, context, navigateToProfile)
+    Column {
+        val textState = remember { mutableStateOf(TextFieldValue()) }
+        OutlinedTextField(
+            textState.value,
+            onValueChange = { textState.value = it },
+            modifier = Modifier.fillMaxWidth(),
+            label = { Text(text = "Searchbar") },
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
+                focusedLabelColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
+                cursorColor = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
+            ),
+            maxLines = 1
+        )
+//        Searchbar implementation. Be aware that the package name is used for reference, searches for android, com etc. won't work properly
+        Text(text = "Searchbar")
+        if (textState.value.text.isNotEmpty()) {
+            LazyColumn {
+                items(apps.filter { packageInfo -> packageInfo.packageName.contains(textState.value.text) }) { app ->
+                    AppCard(app, context, navigateToProfile)
+                }
+            }
+        } else {
+            LazyColumn {
+                items(apps) { app ->
+                    AppCard(app, context, navigateToProfile)
+                }
+            }
         }
     }
+
+}
+
+fun getPckg(app: PackageInfo) {
+
 }
 
 @Composable
 fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application) -> Unit) {
     val pm = context.packageManager
-    
+
     val testapp = Application(
         app.applicationInfo.loadLabel(pm).toString(),
         app.packageName,
@@ -42,13 +73,13 @@ fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application)
         app.applicationInfo.sourceDir,
         app.applicationInfo.dataDir,
     )
-    Row (modifier = Modifier
+    Row(modifier = Modifier
         .padding(all = 8.dp)
         .clickable {
             navigateToProfile(testapp)
         }
         .fillMaxSize()
-    ){
+    ) {
         AsyncImage(
             model = app.applicationInfo.loadIcon(pm),
             contentDescription = "",

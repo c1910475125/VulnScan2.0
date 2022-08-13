@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
+
 @RequiresApi(Build.VERSION_CODES.M)
 @Composable
 fun NavHost(context: Context, activity: MainActivity, navigateToProfile: (Application) -> Unit) {
