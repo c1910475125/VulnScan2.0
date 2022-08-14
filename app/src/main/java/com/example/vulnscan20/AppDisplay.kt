@@ -34,6 +34,7 @@ fun AppList(
     navigateToProfile: (Application) -> Unit
 ) {
     val apps = context.packageManager.getInstalledPackages(0)
+    apps.sortBy { packageInfo -> packageInfo.packageName }
     Column {
         val textState = remember { mutableStateOf(TextFieldValue()) }
         val ignoredRegex = Regex("[\n\r]")
@@ -53,7 +54,7 @@ fun AppList(
 
         if (textState.value.text.isNotEmpty()) {
             LazyColumn {
-                items(apps.filter { packageInfo -> packageInfo.packageName.contains(textState.value.text) }) { app ->
+                items(apps.filter { packageInfo -> packageInfo.packageName.contains(textState.value.text) } ) { app ->
                     AppCard(app, context, navigateToProfile)
                 }
             }

@@ -17,7 +17,6 @@ class ProfileActivity : AppCompatActivity() {
         intent?.getSerializableExtra(PACKAGE_ID) as Application
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
