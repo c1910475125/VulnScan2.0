@@ -98,7 +98,10 @@ fun OSinfo(context: Context) {
             )
         }
 
-        if (bluetoothAdapter != null) {
+        if (bluetoothAdapter != null && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_DENIED) {
             Text(text = "Bluetooth:")
             if (bluetoothAdapter.isEnabled) {
                 Text(
@@ -111,16 +114,7 @@ fun OSinfo(context: Context) {
                     color = Color.Green
                 )
             }
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.BLUETOOTH_CONNECT
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-
-
-                Text(text = "Enable bluetooth permissions for this application to overview paired devices and their MAC addresses. \n")
-
-            } else if (bluetoothAdapter.isEnabled) {
+            if (bluetoothAdapter.isEnabled) {
                 Row {
                     Text(
                         text = "Paired Device Name:",
@@ -145,10 +139,14 @@ fun OSinfo(context: Context) {
 
         }
 
-        if (bluetoothAdapter == null) {
+        if (bluetoothAdapter == null || ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Text(text = "Bluetooth:")
             Text(
-                text = "Your device does not support bluetooth\n"
+                text = "Your device does not support bluetooth or there are no sufficient permissions granted\n"
             )
         }
 
