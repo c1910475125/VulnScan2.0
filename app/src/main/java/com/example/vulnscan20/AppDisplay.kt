@@ -18,13 +18,22 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.vulnscan20.ui.theme.VulnScan20Theme
+import java.io.Serializable
+
+data class Application(
+    val appName: String,
+    val packageName: String,
+    val version: String?,
+    val sourcedir: String,
+    val datadir: String
+) : Serializable
 
 @Composable
 fun AppList(
-    apps: MutableList<PackageInfo>,
     context: Context,
     navigateToProfile: (Application) -> Unit
 ) {
+    val apps = context.packageManager.getInstalledPackages(0)
     Column {
         val textState = remember { mutableStateOf(TextFieldValue()) }
         val ignoredRegex = Regex("[\n\r]")
@@ -59,11 +68,12 @@ fun AppList(
 
 }
 
+
 @Composable
 fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application) -> Unit) {
     val pm = context.packageManager
 
-    val testapp = Application(
+    val snglapp = Application(
         app.applicationInfo.loadLabel(pm).toString(),
         app.packageName,
         app.versionName,
@@ -73,7 +83,7 @@ fun AppCard(app: PackageInfo, context: Context, navigateToProfile: (Application)
     Row(modifier = Modifier
         .padding(all = 8.dp)
         .clickable {
-            navigateToProfile(testapp)
+            navigateToProfile(snglapp)
         }
         .fillMaxSize()
     ) {

@@ -16,7 +16,6 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun NavHost(context: Context, activity: MainActivity, navigateToProfile: (Application) -> Unit) {
     val navController = rememberNavController()
-    val list = context.packageManager.getInstalledPackages(0)
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
@@ -27,7 +26,7 @@ fun NavHost(context: Context, activity: MainActivity, navigateToProfile: (Applic
         ) {
             composable("welcome") { Welcome(navController = navController) }
             composable("homescreen") { HomeScreen(navController = navController, activity, context) }
-            composable("applist") { AppList(list, context, navigateToProfile) }
+            composable("applist") { AppList(context, navigateToProfile) }
             composable("osinfo") { OSinfo(context) }
         }
     }
