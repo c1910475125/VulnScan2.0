@@ -32,8 +32,8 @@ fun OSinfo(context: Context) {
     val devmode = Settings.Secure.getInt(
         context.contentResolver,
         Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
-
     )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,7 +50,7 @@ fun OSinfo(context: Context) {
         } else {
             Text(
                 text = "Developer Settings are enabled. Consider disabling them unless " +
-                        "required in order to significantly increase your devices security.\n",
+                        "required.\n",
                 color = Color.Red
             )
         }
@@ -179,9 +179,8 @@ fun checkTimeout(context: Context): Boolean {
 }
 
 fun isRooted(): Boolean {
-    val isEmulator = isEmulator()
     val buildTags = Build.TAGS
-    return if (!isEmulator && buildTags != null && buildTags.contains("test-keys")) {
+    return if (!isEmulator() && buildTags != null && buildTags.contains("test-keys")) {
         true
     } else {
         val file = File("/system/app/Superuser.apk")
@@ -189,7 +188,7 @@ fun isRooted(): Boolean {
             true
         } else {
             val file = File("/system/xbin/su")
-            !isEmulator && file.exists()
+            !isEmulator() && file.exists()
         }
     }
 }
