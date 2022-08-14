@@ -152,12 +152,11 @@ fun OSinfo(context: Context) {
             )
         }
 
-
         Text(text = "Tapjacking:")
         if (version < 4 || version == 6) {
             Text(
                 text = "Your Android Version could be vulnerable to tapjacking. Consider updating your OS.\n" +
-                        "Vulnerable Versions include Android 4.0.3 and lower as well as Android 6.0.1",
+                        "Vulnerable Versions include Android 4.0.3 and lower as well as Android 6.0.1.",
                 color = Color.Red
             )
         } else {

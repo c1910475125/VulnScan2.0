@@ -42,7 +42,6 @@ fun AppList(
             maxLines = 1
         )
 
-//        Searchbar implementation. Be aware that the package name is used for reference, searches for android, com etc. won't work properly
         if (textState.value.text.isNotEmpty()) {
             LazyColumn {
                 items(apps.filter { packageInfo -> packageInfo.packageName.contains(textState.value.text) }) { app ->
@@ -57,10 +56,6 @@ fun AppList(
             }
         }
     }
-
-}
-
-fun getPckg(app: PackageInfo) {
 
 }
 
