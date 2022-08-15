@@ -108,13 +108,6 @@ fun OSinfo(context: Context) {
                     text = "Your Android Device has bluetooth enabled. Consider disabling it if it is not currently required.\n",
                     color = Color.Red
                 )
-            } else if (!bluetoothAdapter.isEnabled) {
-                Text(
-                    text = "Your Bluetooth is disabled.\n",
-                    color = Color.Green
-                )
-            }
-            if (bluetoothAdapter.isEnabled) {
                 Row {
                     Text(
                         text = "Paired Device Name:",
@@ -135,8 +128,13 @@ fun OSinfo(context: Context) {
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-            }
 
+            } else if (!bluetoothAdapter.isEnabled) {
+                Text(
+                    text = "Your Bluetooth is disabled.\n",
+                    color = Color.Green
+                )
+            }
         }
 
         if (bluetoothAdapter == null || ActivityCompat.checkSelfPermission(
