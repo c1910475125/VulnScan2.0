@@ -61,14 +61,14 @@ fun OSinfo(context: Context) {
                 text = "Your Android Device seems to be rooted. Rooted devices are more vulnerable to malware attacks.\n",
                 color = Color.Red
             )
-        } else if (isEmulator()) {
+        } else if (isEmulator) {
             Text(
                 text = "Your Android Device seems to be emulated.\n",
                 color = Color.Red
             )
         } else {
             Text(
-                text = "Your Android Device seems to not be rooted or emulated.\n",
+                text = "Your Android Device does not seem to be rooted or emulated.\n",
                 color = Color.Green
             )
         }
@@ -178,7 +178,7 @@ fun checkTimeout(context: Context): Boolean {
 
 fun isRooted(): Boolean {
     val buildTags = Build.TAGS
-    return if (!isEmulator() && buildTags != null && buildTags.contains("test-keys")) {
+    return if (!isEmulator && buildTags != null && buildTags.contains("test-keys")) {
         true
     } else {
         val file = File("/system/app/Superuser.apk")
@@ -186,18 +186,30 @@ fun isRooted(): Boolean {
             true
         } else {
             val file = File("/system/xbin/su")
-            !isEmulator() && file.exists()
+            !isEmulator && file.exists()
         }
     }
 }
 
-fun isEmulator(): Boolean {
-    return Build.FINGERPRINT.startsWith("generic")
+val isEmulator: Boolean by lazy {
+    // Android SDK emulator
+    return@lazy ((Build.FINGERPRINT.startsWith("google/sdk_gphone_")
+            && Build.FINGERPRINT.endsWith(":user/release-keys")
+            && Build.MANUFACTURER == "Google" && Build.PRODUCT.startsWith("sdk_gphone_") && Build.BRAND == "google"
+            && Build.MODEL.startsWith("sdk_gphone_"))
+            //
+            || Build.FINGERPRINT.startsWith("generic")
             || Build.FINGERPRINT.startsWith("unknown")
             || Build.MODEL.contains("google_sdk")
             || Build.MODEL.contains("Emulator")
             || Build.MODEL.contains("Android SDK built for x86")
+            //bluestacks
+            || "QC_Reference_Phone" == Build.BOARD && !"Xiaomi".equals(
+        Build.MANUFACTURER,
+        ignoreCase = true
+    ) //bluestacks
             || Build.MANUFACTURER.contains("Genymotion")
-            || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-            || "google_sdk".equals(Build.PRODUCT)
+            || Build.HOST.startsWith("Build") //MSI App Player
+            || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
+            || Build.PRODUCT == "google_sdk")
 }
